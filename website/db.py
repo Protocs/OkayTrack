@@ -15,6 +15,7 @@ class User(db.Model):
     role = db.Column(db.String(5), default="user")
     password_hash = db.Column(db.String(128), nullable=False)
     blocked = db.Column(db.Boolean, default=False)
+    api_token = db.Column(db.Text, nullable=True)
 
     def __repr__(self):
         return f"<User('{self.username}')>"
@@ -26,6 +27,10 @@ class User(db.Model):
     @staticmethod
     def get_all():
         return User.query.all()
+
+    @staticmethod
+    def get_by_token(token):
+        return User.query.filter_by(api_token=token).first()
 
 
 class Task(db.Model):

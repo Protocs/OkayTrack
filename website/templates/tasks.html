@@ -11,9 +11,9 @@
 {% for task in tasks %}
 
 <div class="card">
-    #{{ task.id }} {{ task.name }} <span class="badge badge-secondary">Дедлайн: {{ task.deadline }}</span>
+    <span style="color: black">#{{ task.id }} {{ task.name }} <span class="badge badge-secondary">Дедлайн: {{ task.deadline }}</span></span>
     <span class="badge badge-secondary">Автор: <b>{{ task.username }}</b></span>
-    {{ task.task }}
+    <p style="color: black">{{ task.task }}</p>
     {% if task.performer %}
     <span class="badge badge-secondary">Исполнитель: <b>{{ task.performer }}</b></span>
     {% endif %}
@@ -50,6 +50,7 @@
     </span>
     {% endfor %}
 </div>
+<br>
 
 {% endfor %}
 {% endblock %}

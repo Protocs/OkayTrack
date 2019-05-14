@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_restful import Api
 
 from .config import *
 from skill.bot import Bot
@@ -12,3 +13,4 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = TRACK_MODIFICATIONS
 
 db = SQLAlchemy(app)
 bot = Bot(app)
+api = Api(app)
