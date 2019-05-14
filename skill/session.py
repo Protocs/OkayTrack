@@ -1,6 +1,4 @@
-from website.db import User, Task
 from werkzeug.security import check_password_hash
-from website.app import db
 
 
 class Session:
@@ -12,6 +10,7 @@ class Session:
             self._current_state = 'GREETING'
 
     def handle_state(self, req_parser, resp_parser):
+        from website.db import db, User
         if self._current_state == 'GREETING':
             resp_parser.reply_text = 'Добро пожаловать в систему! ' \
                                      'Вам доступны следующие команды\n:' \
