@@ -26,9 +26,10 @@ class AddCategory(FlaskForm):
 class NewTaskForm(FlaskForm):
     name = StringField("Название", validators=[DataRequired()])
     desc = TextAreaField("Описание", validators=[DataRequired()])
-    # deadline = DateTimeField("Дата выполнения", validators=[DataRequired()])
-    # performer = SelectField("Исполнитель", choices=[(user.name, user.name) for user in users])
-    # category = SelectField("Категория", choices=([("", "-")] + [(c.id, c.name) for c in Category.query.all()]))
     tags = StringField("Теги (разделяйте запятыми)")
     submit = SubmitField("Создать")
 
+
+class CommentForm(FlaskForm):
+    comment = TextAreaField(validators=[DataRequired("Введите текст комментария")])
+    submit = SubmitField("Отправить")

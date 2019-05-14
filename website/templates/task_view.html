@@ -5,4 +5,31 @@
 
 {{ task_macro.render_task(task) }}
 
+<h3>Комментарии</h3>
+
+<div class="text-dark">
+    {% for comm in comments %}
+    <div class="card mb-1">
+        <div class="card-header">{{ comm.username }}</div>
+        <div class="card-body">
+            {{ comm.comment }}
+        </div>
+    </div>
+    {% endfor %}
+
+    <div class="card mt-3">
+        <div class="card-header">Новый комментарий</div>
+        <div class="card-body">
+            <form method="post">
+                {{ form.hidden_tag() }}
+                {% for error in form.comment.errors %}
+                    <div class="alert alert-danger">{{ error }}</div>
+                {% endfor %}
+                {{ form.comment(class_="form-control") }}<br>
+                {{ form.submit(class_="btn btn-primary") }}
+            </form>
+        </div>
+    </div>
+</div>
+
 {% endblock %}

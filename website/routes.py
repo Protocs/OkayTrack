@@ -4,8 +4,8 @@ from flask import render_template, request, session, redirect
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from website.app import app, bot
-from website.db import User, db, Category, Task, Tag
-from website.forms import LoginForm, RegisterForm, AddCategory, NewTaskForm
+from website.db import User, db, Category, Task, Tag, Comment
+from website.forms import LoginForm, RegisterForm, AddCategory, NewTaskForm, CommentForm
 from website.utils import login_required, PRIORITIES, STAGES
 
 HTML_DATETIME_FORMAT = "%Y-%m-%dT%H:%M"
@@ -84,10 +84,15 @@ def add_task():
     return render_template("add_task.html", form=form, now=now_str)
 
 
-@app.route("/tasks/<int:task_id>")
+@app.route("/tasks/<int:task_id>", methods=["GET", "POST"])
 def view_task(task_id):
     task = Task.get_task_by_id(task_id, session["user_name"])
-    return render_template("task_view.html", task=task)
+    comments = Comment.query.filter_by(task_id=task_id).all()
+    form = CommentForm()
+    if form.validate_on_submit():
+        db.session.add(Comment(task_id=task_id, username=session["user_name"], comment=form.comment.data))
+        db.session.commit()
+    return render_template("task_view.html", form=form, task=task, comments=comments)
 
 
 @login_required
