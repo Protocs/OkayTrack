@@ -63,6 +63,7 @@ def register():
 def add_task():
     now_str = datetime.now().strftime(HTML_DATETIME_FORMAT)
     form = NewTaskForm()
+    categories = Category.get_all()
     if form.validate_on_submit():
         tag_strs = form.tags.data.split(",")
         tags = []
@@ -85,7 +86,7 @@ def add_task():
         db.session.add(task)
         db.session.commit()
         return redirect("/")
-    return render_template("add_task.html", form=form, now=now_str)
+    return render_template("add_task.html", form=form, now=now_str, categories=categories)
 
 
 @app.route("/tasks/<int:task_id>", methods=["GET", "POST"])

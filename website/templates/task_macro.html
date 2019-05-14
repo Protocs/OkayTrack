@@ -13,12 +13,12 @@
         {% if t.tags or t.category %}
             <div class="card-footer text-muted">
                 {% if t.category %}
-                    <p>Категория: {{ ctg.category }}</p>
+                    <p>Категория: {{ t.category.name }}</p>
                 {% endif %}
                 {% if t.tags %}
                     Теги:
                     {% for tag in t.tags %}
-                        <span class="border rounded">{{ tag.tag }}</span>
+                        <span class="border rounded" onclick="window.location = '/?tag={{ tag.tag }}'">{{ tag.tag }}</span>
                     {% endfor %}
                 {% endif %}
             </div>

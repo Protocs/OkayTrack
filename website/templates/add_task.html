@@ -9,15 +9,18 @@
         {% endfor %}
         {{ form.name.label }}
         {{ form.name(class_="form-control") }}
+        <br>
 
         {% for error in form.desc.errors %}
             <div class="alert alert-danger">{{ error }}</div>
         {% endfor %}
         {{ form.desc.label }}
         {{ form.desc(class_="form_control") }}
+        <br>
 
         <label for="deadline">Дата выполнения</label>
         <input id="deadline" name="deadline" type="datetime-local" class="form-control" value="{{ now }}" min="{{ now }}">
+        <br>
 
         <label for="performer">Исполнитель</label>
         <select name="performer" id="performer">
@@ -26,6 +29,7 @@
                 <option value="{{ user.name }}">{{ user.name }}</option>
             {% endfor %}
         </select>
+        <br>
 
         <label for="category">Категория</label>
         <select name="category" id="category">
@@ -34,9 +38,11 @@
                 <option value="{{ ctg.id }}">{{ ctg.name }}</option>
             {% endfor %}
         </select>
+        <br>
 
         {{ form.tags.label }}
         {{ form.tags(class_="form-control") }}
+        <br>
 
         {{ form.submit(class_="btn btn-primary") }}
     </form>
