@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block body %}
+    <a href="/add_category">Добавить категорию</a>
+    {% for category in categories %}
+        <div class="alert alert-primary">
+            {{ category.name }}
+            <a href="/edit_category/{{ category.id }}">Изменить категорию</a>
+        </div>
+    {% endfor %}
+
+{% endblock %}

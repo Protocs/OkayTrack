@@ -15,3 +15,8 @@ class RegisterForm(FlaskForm):
     password_again = PasswordField("Пароль (еще раз)",
                                    validators=[DataRequired(), EqualTo("password", "Пароли не совпадают")])
     submit = SubmitField("Войти")
+
+
+class AddCategory(FlaskForm):
+    name = StringField("Название категории")
+    submit = SubmitField("Добавить")

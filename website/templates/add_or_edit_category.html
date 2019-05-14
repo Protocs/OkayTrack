@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+<form class="form-signin" method="post">
+    <h1 class="h3 mb-3 font-weight-normal">
+        {% if category %}
+        Изменение категории
+        {% else %}
+        Добавление категории
+        {% endif %}
+    </h1>
+    {{ form.hidden_tag() }}
+    {% if category %}
+    {{ form.name(class_="form-control", placeholder=form.name.label.text, autofocus=True, value=category.name) }}
+    {% else %}
+    {{ form.name(class_="form-control", placeholder=form.name.label.text, autofocus=True) }}
+    {% endif %}
+    {{ form.submit(class_="btn btn-lg btn-primary btn-block") }}
+</form>
+
+{% endblock %}

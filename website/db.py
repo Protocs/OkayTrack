@@ -56,7 +56,19 @@ class Tag(db.Model):
 
 class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    category = db.Column(db.String(50))
+    name = db.Column(db.String(50))
+
+    @staticmethod
+    def get_all():
+        return Category.query.all()
+
+    @staticmethod
+    def get_by_id(id):
+        return Category.query.filter_by(id=id).first()
+
+    @staticmethod
+    def get_by_name(name):
+        return Category.query.filter_by(name=name).first()
 
 
 class Comment(db.Model):
@@ -67,3 +79,7 @@ class Comment(db.Model):
 
 
 db.create_all()
+if User.query.filter_by(role="admin").first() is None:
+    admin = User(name="admin", role="admin", password_hash=generate_password_hash("password"))
+    db.session.add(admin)
+    db.session.commit()

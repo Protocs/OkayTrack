@@ -2,8 +2,8 @@ from flask import render_template, request, session, redirect
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from website.app import app, bot
-from website.db import User, db, Task
-from website.forms import LoginForm, RegisterForm
+from website.db import User, db, Category, Task
+from website.forms import LoginForm, RegisterForm, AddCategory
 from website.utils import login_required
 
 
@@ -25,6 +25,7 @@ def login():
             form.password.errors.append("Неправильный пароль")
             return render_template("login.html", form=form)
         session["user_name"] = user.name
+        session["role"] = user.role
         return redirect("/")
 
     return render_template("login.html", form=form)
@@ -42,6 +43,7 @@ def register():
         db.session.add(user)
         db.session.commit()
         session["user_name"] = user.name
+        session["role"] = user.role
         return redirect("/")
 
     return render_template("register.html", form=form)
@@ -51,9 +53,60 @@ def register():
 @app.route("/logout")
 def logout():
     del session["user_name"]
+    del session["role"]
     return redirect("/")
 
 
 @app.route("/post", methods=["POST"])
 def get_request():
     return bot.handle_request(request.json)
+
+
+@app.route("/task-categories")
+def task_categories():
+    if session["role"] != "admin":
+        return redirect("/")
+
+    categories = Category.get_all()
+    return render_template("categories.html", categories=categories)
+
+
+@app.route("/add_category", methods=["GET", "POST"])
+def add_category():
+    if session["role"] != "admin":
+        return redirect("/")
+
+    form = AddCategory()
+    if form.validate_on_submit():
+        category = Category.get_by_name(form.name.data)
+        if category is not None:
+            form.name.errors.append("Категория с таким названием уже существует")
+            return render_template("add_or_edit_category.html", form=form)
+        category = Category(name=form.name.data)
+        db.session.add(category)
+        db.session.commit()
+        return redirect("/task-categories")
+    return render_template("add_or_edit_category.html", form=form)
+
+
+@app.route("/edit_category/<int:category_id>", methods=["GET", "POST"])
+def edit_category(category_id):
+    if session["role"] != "admin":
+        return redirect("/")
+
+    category = Category.get_by_id(category_id)
+    if category is None:
+        return redirect("/task-categories")
+    form = AddCategory()
+    if form.validate_on_submit():
+        category.name = form.name.data
+        db.session.commit()
+        return redirect("/task-categories")
+    return render_template("add_or_edit_category.html", category=category, form=form)
+
+
+@app.route("/users")
+def users():
+    if session["role"] != "admin":
+        return redirect("/")
+
