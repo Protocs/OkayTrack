@@ -1,9 +1,12 @@
 from flask import Flask
-from flask_bootstrap import Bootstrap
+from flask_sqlalchemy import SQLAlchemy
 
-from .config import FORM_SECRET_KEY
+from .config import *
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = FORM_SECRET_KEY
 app.config["JSON_AS_ASCII"] = False
-Bootstrap(app)
+app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URI
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = TRACK_MODIFICATIONS
+
+db = SQLAlchemy(app)
