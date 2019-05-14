@@ -62,6 +62,8 @@ def register():
 @login_required
 @app.route("/add-task", methods=["GET", "POST"])
 def add_task():
+    if session["blocked"]:
+        return redirect("/")
     now_str = datetime.now().strftime(HTML_DATETIME_FORMAT)
     form = NewTaskForm()
     categories = Category.get_all()
