@@ -30,4 +30,5 @@ class Bot:
         user = User.query.filter_by(alice_id=user_id).first()
         if user is None:
             self._sessions[user_id] = Session(None)
+            return
         self._sessions[user_id] = Session(user)
