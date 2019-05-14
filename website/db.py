@@ -1,15 +1,11 @@
+from werkzeug.security import generate_password_hash
+
 from .app import db
 
 task_tags_association = db.Table(
     "tasks_tags",
     db.Column("task_id", db.Integer, db.ForeignKey("task.id")),
     db.Column("tag_id", db.Integer, db.ForeignKey("tag.id"))
-)
-
-task_categories_association = db.Table(
-    "task_categories",
-    db.Column("task_id", db.Integer, db.ForeignKey("task.id")),
-    db.Column("category_id", db.Integer, db.ForeignKey("category.id"))
 )
 
 
@@ -39,10 +35,10 @@ class Task(db.Model):
     priority = db.Column(db.Integer, nullable=True)
     stage = db.Column(db.Integer, nullable=True)
     completed = db.Column(db.Boolean, nullable=True)
+    category_id = db.Column(db.Integer, db.ForeignKey("category.id"), nullable=True)
+    category = db.relationship("Category", backref=db.backref("tasks", lazy=True))
 
     tags = db.relationship("Tag", secondary=task_tags_association, backref=db.backref("tasks", lazy=True))
-    categories = db.relationship("Category", secondary=task_categories_association,
-                                 backref=db.backref("tasks", lazy=True))
 
     @staticmethod
     def get_user_tasks(username):
