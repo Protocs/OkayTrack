@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+{% for user in users %}
+
+<div class="card">
+    <h3 style="color: black">{{ user.name }}
+        <span class="badge badge-secondary">{{ user.role }}</span>
+        <span class="badge badge-secondary">
+            {% if user.blocked %} Заблокирован {% else %} Активен {% endif %}
+        </span>
+        {% if user.name != session.user_name %}
+        <form method="post">
+            <button type="submit" name="status-{{ user.name }}">
+                {% if user.blocked %} Разблокировать {% else %} Заблокировать {% endif %}
+            </button>
+            <button type="submit" name="setadmin-{{ user.name }}">
+                {% if user.role == "user" %} Назначить администратором {% else %} Разжаловать администратора {% endif %}
+            </button>
+        </form>
+        {% endif %}
+    </h3>
+</div>
+
+{% endfor %}
+
+{% endblock %}

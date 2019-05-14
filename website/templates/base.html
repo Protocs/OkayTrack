@@ -16,10 +16,11 @@
                     <a class="nav-link" href="/login">Вход</a>
                     <a class="nav-link" href="/register">Регистрация</a>
                 {% else %}
+                    {{ session.user_name }} | &nbsp;
                     {% if session.role == "admin" %}
                         <a class="nav-link" href="/task-categories">Категории</a>
+                        <a class="nav-link" href="/users">Пользователи</a>
                     {% endif %}
-                    {{ session.user_name }} | &nbsp;
                     <a class="nav-link" href="/logout">Выйти</a>
                 {% endif %}
             </nav>

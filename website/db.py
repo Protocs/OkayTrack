@@ -14,6 +14,7 @@ class User(db.Model):
     alice_id = db.Column(db.String(64), nullable=True)
     role = db.Column(db.String(5), default="user")
     password_hash = db.Column(db.String(128), nullable=False)
+    blocked = db.Column(db.Boolean, default=False)
 
     def __repr__(self):
         return f"<User('{self.username}')>"
@@ -21,6 +22,10 @@ class User(db.Model):
     @staticmethod
     def get_by_username(username):
         return User.query.filter_by(name=username).first()
+
+    @staticmethod
+    def get_all():
+        return User.query.all()
 
 
 class Task(db.Model):

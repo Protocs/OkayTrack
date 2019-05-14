@@ -105,8 +105,20 @@ def edit_category(category_id):
     return render_template("add_or_edit_category.html", category=category, form=form)
 
 
-@app.route("/users")
+@app.route("/users", methods=["GET", "POST"])
 def users():
     if session["role"] != "admin":
         return redirect("/")
 
+    if request.method == "POST":
+        for k in request.form:
+            username = "-".join(k.split("-")[1])
+            user = User.get_by_username(username)
+            if k.startswith("status"):
+                user.blocked = not user.blocked
+            elif k.startswith("setadmin"):
+                user.role = "admin" if user.role == "user" else "user"
+            db.session.commit()
+
+    users = User.get_all()
+    return render_template("users.html", users=users)
