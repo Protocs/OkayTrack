@@ -1,10 +1,14 @@
+from datetime import datetime
+
 from flask import render_template, request, session, redirect
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from website.app import app, bot
-from website.db import User, db, Category, Task
-from website.forms import LoginForm, RegisterForm, AddCategory
+from website.db import User, db, Category, Task, Tag
+from website.forms import LoginForm, RegisterForm, AddCategory, NewTaskForm
 from website.utils import login_required, PRIORITIES, STAGES
+
+HTML_DATETIME_FORMAT = "%Y-%m-%dT%H:%M"
 
 
 @app.route("/")
@@ -47,6 +51,36 @@ def register():
         return redirect("/")
 
     return render_template("register.html", form=form)
+
+
+@login_required
+@app.route("/add-task", methods=["GET", "POST"])
+def add_task():
+    now_str = datetime.now().strftime(HTML_DATETIME_FORMAT)
+    form = NewTaskForm()
+    if form.validate_on_submit():
+        tag_strs = form.tags.data.split(",")
+        tags = []
+        for s in tag_strs:
+            tag = Tag.query.filter_by(tag=s).first()
+            if tag is None:
+                tag = Tag(tag=s)
+                db.session.add(tag)
+                db.session.commit()
+            tags.append(tag)
+        task = Task(
+            username=session["user_name"],
+            name=form.name.data,
+            task=form.desc.data,
+            deadline=datetime.strptime(request.form["deadline"], HTML_DATETIME_FORMAT),
+            performer=request.form["performer"],
+            category_id=request.form["category"],
+            tags=tags
+        )
+        db.session.add(task)
+        db.session.commit()
+        return redirect("/")
+    return render_template("add_task.html", form=form, now=now_str)
 
 
 @login_required

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block body %}
+    <form method="post">
+        {{ form.hidden_tag() }}
+
+        {% for error in form.name.errors %}
+            <div class="alert alert-danger">{{ error }}</div>
+        {% endfor %}
+        {{ form.name.label }}
+        {{ form.name(class_="form-control") }}
+
+        {% for error in form.desc.errors %}
+            <div class="alert alert-danger">{{ error }}</div>
+        {% endfor %}
+        {{ form.desc.label }}
+        {{ form.desc(class_="form_control") }}
+
+        <label for="deadline">Дата выполнения</label>
+        <input id="deadline" name="deadline" type="datetime-local" class="form-control" value="{{ now }}" min="{{ now }}">
+
+        <label for="performer">Исполнитель</label>
+        <select name="performer" id="performer">
+            <option value="-" selected>Вы</option>
+            {% for user in users %}
+                <option value="{{ user.name }}">{{ user.name }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="category">Категория</label>
+        <select name="category" id="category">
+            <option value="" selected>-</option>
+            {% for ctg in categories %}
+                <option value="{{ ctg.id }}">{{ ctg.name }}</option>
+            {% endfor %}
+        </select>
+
+        {{ form.tags.label }}
+        {{ form.tags(class_="form-control") }}
+
+        {{ form.submit(class_="btn btn-primary") }}
+    </form>
+{% endblock %}
