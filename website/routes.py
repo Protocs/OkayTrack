@@ -116,6 +116,19 @@ def view_task(task_id):
 
 
 @login_required
+@app.route("/delegate/<int:task_id>", methods=["GET", "POST"])
+def delegate(task_id):
+    if request.method == "GET":
+        users = User.query.filter(User.name != session["user_name"]).all()
+        return render_template("delegate.html", users=users)
+    if request.method == "POST":
+        task = Task.get_task_by_id(task_id, session["user_name"])
+        task.performer = request.form["user"]
+        db.session.commit()
+        return redirect(f"/tasks/{task_id}")
+
+
+@login_required
 @app.route("/logout")
 def logout():
     del session["user_name"]

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block body %}
+    <form method="post">
+        <label for="user">Делегировать пользователю</label>
+        <select name="user" id="user">
+            {% for user in users %}
+                <option value="{{ user.name }}">{{ user.name }}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Делегировать">
+    </form>
+{% endblock %}
