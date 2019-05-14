@@ -25,30 +25,50 @@
             <p>Зарегистрируйтесь или войдите для работы в системе</p>
         </div>
     {% else %}
-        <div class="text-dark">
-            {% for task in tasks %}
-                <div class="card mb-1">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ task.name }}</h5>
+        {% macro task(t) %}
+            <div class="card mb-1 text-dark">
+                <div class="card-body">
+                    <h5 class="card-title">{{ t.name }}</h5>
 
-                        <h6 class="card-subtitle">Автор: {{ task.username }}</h6>
-                        <h6 class="card-subtitle">До: {{ task.deadline }}</h6>
-                        {% if task.performer %}
-                            <h6 class="card-subtitle">Исполнитель: {{ task.performer }}</h6>
-                        {% endif %}
-                        <p class="card-text">{{ task.task }}</p>
-                    </div>
+                    <h6 class="card-subtitle">Автор: {{ t.username }}</h6>
+                    <h6 class="card-subtitle">До: {{ t.deadline }}</h6>
+                    {% if t.performer %}
+                        <h6 class="card-subtitle">Исполнитель: {{ t.performer }}</h6>
+                    {% endif %}
+                    <p class="card-text">{{ t.task }}</p>
+                </div>
+                {% if t.tags or t.category %}
                     <div class="card-footer text-muted">
-                        {% if task.category %}
+                        {% if t.category %}
                             <p>Категория: {{ ctg.category }}</p>
                         {% endif %}
-                        Теги:
-                        {% for tag in task.tags %}
-                            <span class="border rounded">{{ tag.tag }}</span>
-                        {% endfor %}
+                        {% if t.tags %}
+                            Теги:
+                            {% for tag in t.tags %}
+                                <span class="border rounded">{{ tag.tag }}</span>
+                            {% endfor %}
+                        {% endif %}
                     </div>
-                </div>
+                {% endif %}
+            </div>
+        {% endmacro %}
+
+        {% if not my and not delegated %}
+            <h3 class="text-muted">Нет задач</h3>
+        {% endif %}
+
+        {% if my %}
+            <h3>Мои задачи</h3>
+            {% for t in my %}
+                {{ task(t) }}
             {% endfor %}
-        </div>
+        {% endif %}
+
+        {% if delegated %}
+            <h3>Задачи, делегированные мне</h3>
+            {% for t in delegated %}
+                {{ task(t) }}
+            {% endfor %}
+        {% endif %}
     {% endif %}
 {% endblock %}
