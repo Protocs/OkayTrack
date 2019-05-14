@@ -35,6 +35,7 @@ def login():
             return render_template("login.html", form=form)
         session["user_name"] = user.name
         session["role"] = user.role
+        session["blocked"] = user.blocked
         return redirect("/")
 
     return render_template("login.html", form=form)
