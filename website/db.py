@@ -1,5 +1,5 @@
 from werkzeug.security import generate_password_hash
-
+import datetime
 from .app import db
 
 task_tags_association = db.Table(
@@ -56,6 +56,19 @@ class Task(db.Model):
     @staticmethod
     def get_all():
         return Task.query.all()
+
+    @staticmethod
+    def get_task_by_id(id, username):
+        return Task.query.filter_by(id=id, username=username).first()
+
+    @staticmethod
+    def get_late_tasks(username):
+        late = []
+        for task in Task.get_user_tasks(username):
+            task_date = task.deadline
+            if task_date < datetime.datetime.now():
+                late.append(task)
+        return late
 
 
 class Tag(db.Model):
