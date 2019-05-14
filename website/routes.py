@@ -13,8 +13,11 @@ HTML_DATETIME_FORMAT = "%Y-%m-%dT%H:%M"
 
 @app.route("/")
 def index():
-    my_tasks = Task.get_user_tasks(session["user_name"])
-    delegated_tasks = Task.get_delegated_tasks(session["user_name"])
+    if "user_name" in session:
+        my_tasks = Task.get_user_tasks(session["user_name"])
+        delegated_tasks = Task.get_delegated_tasks(session["user_name"])
+    else:
+        my_tasks = delegated_tasks = []
     return render_template("index.html", my=my_tasks, delegated=delegated_tasks)
 
 
