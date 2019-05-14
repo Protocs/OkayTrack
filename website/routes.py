@@ -2,14 +2,15 @@ from flask import render_template, request, session, redirect
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from website.app import app, bot
-from website.db import User, db
+from website.db import User, db, Task
 from website.forms import LoginForm, RegisterForm
 from website.utils import login_required
 
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    tasks = Task.query.all()
+    return render_template("index.html", tasks=tasks)
 
 
 @app.route("/login", methods=["GET", "POST"])
