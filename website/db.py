@@ -12,13 +12,14 @@ task_tags_association = db.Table(
 class User(db.Model):
     name = db.Column(db.String(20), primary_key=True)
     alice_id = db.Column(db.String(64), nullable=True)
+    telegram_id = db.Column(db.Integer, nullable=True)
     role = db.Column(db.String(5), default="user")
     password_hash = db.Column(db.String(128), nullable=False)
     blocked = db.Column(db.Boolean, default=False)
     api_token = db.Column(db.Text, nullable=True)
 
     def __repr__(self):
-        return f"<User('{self.username}')>"
+        return f"<User('{self.name}')>"
 
     @staticmethod
     def get_by_username(username):
@@ -31,6 +32,10 @@ class User(db.Model):
     @staticmethod
     def get_by_token(token):
         return User.query.filter_by(api_token=token).first()
+
+    @staticmethod
+    def get_by_telegram_id(telegram_id):
+        return User.query.filter_by(telegram_id=telegram_id).first()
 
 
 class Task(db.Model):
