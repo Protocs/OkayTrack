@@ -16,9 +16,10 @@ def index():
     if "user_name" in session:
         my_tasks = Task.get_user_tasks(session["user_name"])
         delegated_tasks = Task.get_delegated_tasks(session["user_name"])
+        late_tasks = Task.get_late_tasks(session["user_name"])
     else:
-        my_tasks = delegated_tasks = []
-    return render_template("index.html", my=my_tasks, delegated=delegated_tasks)
+        my_tasks = delegated_tasks = late_tasks = []
+    return render_template("index.html", my=my_tasks, delegated=delegated_tasks, late=late_tasks)
 
 
 @app.route("/login", methods=["GET", "POST"])

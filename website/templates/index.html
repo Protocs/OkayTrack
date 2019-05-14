@@ -30,6 +30,13 @@
             <h3 class="text-muted">Нет задач</h3>
         {% endif %}
 
+        {% if late %}
+            <h3>Просроченные задачи</h3>
+            {% for t in late %}
+                {{ task_macro.render_task(t) }}
+            {% endfor %}
+        {% endif %}
+
         {% if my %}
             <h3>Мои задачи</h3>
             {% for t in my %}
