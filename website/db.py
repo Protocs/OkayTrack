@@ -24,7 +24,7 @@ class User(db.Model):
 
     @staticmethod
     def get_by_username(username):
-        return User.query().filter_by(name=username).first()
+        return User.query.filter_by(name=username).first()
 
 
 class Task(db.Model):
@@ -40,7 +40,6 @@ class Task(db.Model):
     stage = db.Column(db.Integer, nullable=True)
     completed = db.Column(db.Boolean, nullable=True)
 
-    author = db.relationship("User", backref="tasks")
     tags = db.relationship("Tag", secondary=task_tags_association, backref=db.backref("tasks", lazy=True))
     categories = db.relationship("Category", secondary=task_categories_association,
                                  backref=db.backref("tasks", lazy=True))

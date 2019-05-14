@@ -12,5 +12,6 @@ class LoginForm(FlaskForm):
 class RegisterForm(FlaskForm):
     login = StringField("Логин", validators=[DataRequired()])
     password = PasswordField("Пароль", validators=[DataRequired()])
-    password_again = PasswordField("Пароль (еще раз)", validators=[DataRequired(), EqualTo("password")])
+    password_again = PasswordField("Пароль (еще раз)",
+                                   validators=[DataRequired(), EqualTo("password", "Пароли не совпадают")])
     submit = SubmitField("Войти")
