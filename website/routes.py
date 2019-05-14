@@ -1,6 +1,6 @@
 from flask import render_template, request
 
-from website.app import app
+from website.app import app, bot
 from website.db import User
 from website.forms import LoginForm, RegisterForm
 
@@ -26,3 +26,8 @@ def register():
         return render_template("register.html", form=form)
     else:
         ...
+
+
+@app.route("/post", methods=["POST"])
+def get_request():
+    return bot.handle_request(request.json)
