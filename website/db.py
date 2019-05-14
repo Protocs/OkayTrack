@@ -44,6 +44,14 @@ class Task(db.Model):
     categories = db.relationship("Category", secondary=task_categories_association,
                                  backref=db.backref("tasks", lazy=True))
 
+    @staticmethod
+    def get_user_tasks(username):
+        return Task.query.filter_by(username=username).all()
+
+    @staticmethod
+    def get_delegated_tasks(username):
+        return Task.query.filter_by(performer=username).all()
+
 
 class Tag(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -56,7 +64,7 @@ class Category(db.Model):
 
 
 class Comment(db.Model):
-    comment_id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     task_id = db.Column(db.Integer, db.ForeignKey("task.id"))
     username = db.Column(db.String(20), db.ForeignKey("user.name"))
     comment = db.Column(db.Text)
