@@ -19,23 +19,6 @@
 {% endblock %}
 
 {% block body %}
-    <header class="masthead">
-        <div class="inner">
-            <h3 class="masthead-brand">OkayTrack</h3>
-            <nav class="nav nav-masthead justify-content-center">
-                {% if not session.user_name %}
-                    <a class="nav-link" href="/login">Вход</a>
-                    <a class="nav-link" href="/register">Регистрация</a>
-                {% else %}
-                    {{ session.user_name }} | &nbsp;
-                    {% if session.role == "admin" %}
-                        <a class="nav-link" href="/task-categories">Категории</a>
-                    {% endif %}
-                    <a class="nav-link" href="/logout">Выйти</a>
-                {% endif %}
-            </nav>
-        </div>
-    </header>
     {% if not session.user_name %}
         <div class="h-100">
             <h1>Ошибка</h1>
