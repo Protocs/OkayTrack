@@ -1,4 +1,3 @@
-
 import json
 
 from .res_req_parser import RequestParser, ResponseParser
@@ -26,11 +25,9 @@ class Bot:
         return json.dumps(response)
 
     def _create_new_session(self, request, user_id):
-        from okayenglish.db import User, db
+        from website.db import User
 
-        user = User.query.filter_by(user_id=user_id).first()
+        user = User.query.filter_by(alice_id=user_id).first()
         if user is None:
-            user = User(user_id=request.user_id)
-            db.session.add(user)
-            db.session.commit()
+            self._sessions[user_id] = Session(None)
         self._sessions[user_id] = Session(user)
