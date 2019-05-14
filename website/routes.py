@@ -84,6 +84,12 @@ def add_task():
     return render_template("add_task.html", form=form, now=now_str)
 
 
+@app.route("/tasks/<int:task_id>")
+def view_task(task_id):
+    task = Task.get_task_by_id(task_id, session["user_name"])
+    return render_template("task_view.html", task=task)
+
+
 @login_required
 @app.route("/logout")
 def logout():

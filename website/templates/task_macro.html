@@ -1,0 +1,27 @@
+{% macro render_task(t) %}
+    <div class="card mb-1 text-dark" onclick="window.location = '/tasks/{{ t.id }}'">
+        <div class="card-body">
+            <h5 class="card-title">{{ t.name }}</h5>
+
+            <h6 class="card-subtitle">Автор: {{ t.username }}</h6>
+            <h6 class="card-subtitle">До: {{ t.deadline }}</h6>
+            {% if t.performer %}
+                <h6 class="card-subtitle">Исполнитель: {{ t.performer }}</h6>
+            {% endif %}
+            <p class="card-text">{{ t.task }}</p>
+        </div>
+        {% if t.tags or t.category %}
+            <div class="card-footer text-muted">
+                {% if t.category %}
+                    <p>Категория: {{ ctg.category }}</p>
+                {% endif %}
+                {% if t.tags %}
+                    Теги:
+                    {% for tag in t.tags %}
+                        <span class="border rounded">{{ tag.tag }}</span>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+{% endmacro %}

@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% import "task_macro.html" as task_macro %}
+
+{% block body %}
+
+{{ task_macro.render_task(task) }}
+
+{% endblock %}
