@@ -17,19 +17,25 @@
     </div>
     {% endfor %}
 
-    <div class="card mt-3">
-        <div class="card-header">Новый комментарий</div>
-        <div class="card-body">
-            <form method="post">
-                {{ form.hidden_tag() }}
-                {% for error in form.comment.errors %}
-                    <div class="alert alert-danger">{{ error }}</div>
-                {% endfor %}
-                {{ form.comment(class_="form-control") }}<br>
-                {{ form.submit(class_="btn btn-primary") }}
-            </form>
+    {% if user.blocked %}
+        <div class="card mt-3 text-danger">
+            Вы заблокированы и не можете оставлять комментарии
         </div>
-    </div>
+    {% else %}
+        <div class="card mt-3">
+            <div class="card-header">Новый комментарий</div>
+            <div class="card-body">
+                <form method="post">
+                    {{ form.hidden_tag() }}
+                    {% for error in form.comment.errors %}
+                        <div class="alert alert-danger">{{ error }}</div>
+                    {% endfor %}
+                    {{ form.comment(class_="form-control") }}<br>
+                    {{ form.submit(class_="btn btn-primary") }}
+                </form>
+            </div>
+        </div>
+    {% endif %}
 </div>
 
 {% endblock %}

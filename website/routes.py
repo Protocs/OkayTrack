@@ -86,13 +86,17 @@ def add_task():
 
 @app.route("/tasks/<int:task_id>", methods=["GET", "POST"])
 def view_task(task_id):
+    user = User.get_by_username(session["user_name"])
     task = Task.get_task_by_id(task_id, session["user_name"])
     comments = Comment.query.filter_by(task_id=task_id).all()
     form = CommentForm()
     if form.validate_on_submit():
+        if user.blocked:
+            form.comment.errors.append("Вы заблокированы и не можете оставлять комментарии")
+            return render_template("task_view.html", form=form, task=task, comments=comments, user=user)
         db.session.add(Comment(task_id=task_id, username=session["user_name"], comment=form.comment.data))
         db.session.commit()
-    return render_template("task_view.html", form=form, task=task, comments=comments)
+    return render_template("task_view.html", form=form, task=task, comments=comments, user=user)
 
 
 @login_required
