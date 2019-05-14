@@ -16,6 +16,9 @@
                     <a class="nav-link" href="/login">Вход</a>
                     <a class="nav-link" href="/register">Регистрация</a>
                 {% else %}
+                    {% if session.role == "admin" %}
+                        <a class="nav-link" href="/task-categories">Категории</a>
+                    {% endif %}
                     {{ session.user_name }} | &nbsp;
                     <a class="nav-link" href="/logout">Выйти</a>
                 {% endif %}
