@@ -19,6 +19,14 @@ def index():
         late_tasks = Task.get_late_tasks(session["user_name"])
     else:
         my_tasks = delegated_tasks = late_tasks = []
+
+    if "tag" in request.args:
+        tag_id = request.args["tag"]
+        tag = Tag.query.filter_by(id=tag_id).first()
+        my_tasks = [t for t in my_tasks if tag.belongs_to(t)]
+        delegated_tasks = [t for t in delegated_tasks if tag.belongs_to(t)]
+        late_tasks = [t for t in late_tasks if tag.belongs_to(t)]
+
     return render_template("index.html", my=my_tasks, delegated=delegated_tasks, late=late_tasks)
 
 

@@ -1,6 +1,6 @@
 {% macro render_task(t) %}
-    <div class="card mb-1 text-dark" onclick="window.location = '/tasks/{{ t.id }}'">
-        <div class="card-body">
+    <div class="card mb-1 text-dark">
+        <div class="card-body" onclick="window.location = '/tasks/{{ t.id }}'">
             <h5 class="card-title">{{ t.name }}</h5>
 
             <h6 class="card-subtitle">Автор: {{ t.username }}</h6>
@@ -18,7 +18,7 @@
                 {% if t.tags %}
                     Теги:
                     {% for tag in t.tags %}
-                        <span class="border rounded" onclick="window.location = '/?tag={{ tag.tag }}'">{{ tag.tag }}</span>
+                        <span class="border rounded" onclick="window.location = '/?tag={{ tag.id }}'">{{ tag.tag }}</span>
                     {% endfor %}
                 {% endif %}
             </div>

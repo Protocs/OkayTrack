@@ -80,6 +80,9 @@ class Tag(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     tag = db.Column(db.String(20))
 
+    def belongs_to(self, task):
+        return self in task.tags
+
 
 class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
