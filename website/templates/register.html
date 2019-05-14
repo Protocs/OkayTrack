@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+    <link href="{{ url_for('static', filename='css/signin.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+<form class="form-signin" method="post">
+    <h1 class="h3 mb-3 font-weight-normal">Регистрация</h1>
+    {{ form.hidden_tag() }}
+    {{ form.login(class_="form-control", placeholder=form.login.label.text, autofocus=True) }}
+    {{ form.password(class_="form-control", placeholder=form.password.label.text) }}
+    {{ form.password_again(class_="form-control", placeholder=form.password_again.label.text) }}
+    {{ form.submit(class_="btn btn-lg btn-primary btn-block") }}
+</form>
+{% endblock %}
