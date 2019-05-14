@@ -53,6 +53,10 @@ class Task(db.Model):
     def get_delegated_tasks(username):
         return Task.query.filter_by(performer=username).all()
 
+    @staticmethod
+    def get_all():
+        return Task.query.all()
+
 
 class Tag(db.Model):
     id = db.Column(db.Integer, primary_key=True)

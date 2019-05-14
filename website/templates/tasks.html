@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+<p>Поиск задач по автору</p>
+<form method="post">
+    <input type="text" placeholder="Введите имя автора" name="author_name">
+    <button type="submit">Искать</button>
+</form>
+
+{% for task in tasks %}
+
+<div class="card">
+    #{{ task.id }} {{ task.name }} <span class="badge badge-secondary">Дедлайн: {{ task.deadline }}</span>
+    <span class="badge badge-secondary">Автор: <b>{{ task.username }}</b></span>
+    {{ task.task }}
+    {% if task.performer %}
+    <span class="badge badge-secondary">Исполнитель: <b>{{ task.performer }}</b></span>
+    {% endif %}
+
+    {% if task.priority %}
+    <span class="badge badge-secondary">
+        {{ PRIORITIES[task.priority] }}
+    </span>
+    {% endif %}
+
+    {% if task.stage %}
+    <span class="badge badge-secondary">
+        {{ STAGES[task.stage].capitalize() }} этап
+    </span>
+    {% endif %}
+
+    <span class="badge badge-secondary">
+        {% if task.completed %}
+        Выполнено
+        {% else %}
+        Не выполнено
+        {% endif %}
+    </span>
+
+    {% if task.category %}
+    <span class="badge badge-secondary">
+        Категория: {{ task.category }}
+    </span>
+    {% endif %}
+
+    {% for tag in task.tags %}
+    <span class="badge badge-primary">
+        {{ tag.tag }}
+    </span>
+    {% endfor %}
+</div>
+
+{% endfor %}
+{% endblock %}

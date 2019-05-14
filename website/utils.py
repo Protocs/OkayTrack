@@ -8,3 +8,7 @@ def login_required(route):
         route(*args, **kwargs)
 
     return decorated
+
+
+PRIORITIES = ["Низкий приоритет", "Средний приоритет", "Высокий приоритет"]
+STAGES = ["Начальный", "Основной", "Конечный"]

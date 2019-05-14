@@ -4,7 +4,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from website.app import app, bot
 from website.db import User, db, Category, Task
 from website.forms import LoginForm, RegisterForm, AddCategory
-from website.utils import login_required
+from website.utils import login_required, PRIORITIES, STAGES
 
 
 @app.route("/")
@@ -122,3 +122,16 @@ def users():
 
     users = User.get_all()
     return render_template("users.html", users=users)
+
+
+@app.route("/all_tasks", methods=["GET", "POST"])
+def all_tasks():
+    if session["role"] != "admin":
+        return redirect("/")
+
+    if request.method == "POST":
+        author = request.form.get("author_name")
+        tasks = Task.get_user_tasks(author)
+    else:
+        tasks = Task.get_all()
+    return render_template("tasks.html", tasks=tasks, priorities=PRIORITIES, stages=STAGES)
